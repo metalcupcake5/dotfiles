@@ -1,0 +1,120 @@
+(defwindow bar
+    :geometry (geometry 
+        :x "0%"
+        :y "20px"
+        :width "99%"
+        :height "20px"
+        :anchor "top center"
+    )
+    :stacking "fg"
+    :reserve (struts :distance "25px" :side "top")
+    :windowtype "dock"
+    (bar)
+)
+
+(defwindow background
+    :geometry (geometry
+        :width "20%"
+        :height "20%"
+        :anchor "center"
+    )
+    :stacking "bg"
+    :wm-ignore "false"
+    :focusable "false"
+    (background)
+)
+
+(defwindow menu
+    :geometry (geometry
+        :width "20%"
+        :height "20%"
+        :anchor "center"
+    )
+    :stacking "bg"
+    :wm-ignore "false"
+    :focusable "false"
+    (menu)
+)
+
+(defwidget menu []
+    (box
+        :class "bg"
+        :orientation "v"
+        "Hello ${username}!"
+        (music)
+        (time)
+    )
+)
+
+(defwidget bar []
+    (box
+        :orientation "h"
+        "RAM: ${round(EWW_RAM.used_mem/(1000 * 1000), 2)}/${round(EWW_RAM.total_mem/(1000 * 1000), 2)}"
+        (music)
+        (time)
+    )
+)
+
+(defwidget background []
+    (box
+        :class "bg"
+    )
+)
+
+(defwidget music []
+    (box
+        :orientation "h"
+        :halign "center"
+        (albumCover
+            :url {musicThumbnail}
+        )
+        (box 
+            :class "music"
+            :orientation "v"
+            :halign "center"
+            (literal {music != "" ? "${music}" : ""})
+            (literal {musicAlbum != "" ? "Album: ${musicAlbum}" : ""})
+        )
+    )
+    
+)
+
+(defwidget time []
+    (box
+        :tooltip "hi"
+    time
+    )
+)
+
+(defwidget albumCover [url]
+    (box
+        :class "albumCover"
+        :style "background-image: url('${url}');"
+    )
+)
+
+(defpoll music 
+    :interval "2s"
+    `scripts/music --main`
+)
+
+(defpoll musicAlbum
+    :interval "2s"
+    `scripts/music --album`
+)
+
+(defpoll musicThumbnail
+    :interval "2s"
+    `scripts/music --albumCover`
+)
+
+(defpoll time
+    :interval "1s"
+    "date '+%r, %A %B %d'"
+)
+
+(defpoll username
+    :interval "100s"
+    :initial `whoami`
+    `whoami`
+)

@@ -18,7 +18,7 @@
 
 
 ;polybar config by metalcupcake5
-;last updated feb 22, 2022
+;last updated apr 10, 2022
 
 [colors]
 ;background = ${xrdb:color0:#222}
@@ -136,7 +136,7 @@ menu-2-1-exec = menu-open-0
 [module/spotify]
 type = custom/script
 
-exec = spotify-now -p "Paused" -e "Stopped" -i "%artist - %title from %album"
+exec = if [[ $(playerctl status --ignore-player=spotify-qt) == "Playing" ]]; then echo "$(playerctl metadata --format "{{ artist }} - {{ title }}")"; elif [[ $(playerctl status --player=spotify-qt) == "Playing" ]]; then echo "$(playerctl metadata --player=spotify-qt --format "{{ artist }} - {{ title }} from {{ album }}")"; else echo $(playerctl status --player=spotify-qt); fi
 
 interval = 2
 

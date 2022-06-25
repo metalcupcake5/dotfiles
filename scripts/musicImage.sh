@@ -1,0 +1,2 @@
+TMP_PIC_DIR="/tmp"
+wget -q --output-document="${TMP_PIC_DIR}"/spotify-art.png $(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata'|egrep -A 1 "artUrl"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$) 2> /dev/null
